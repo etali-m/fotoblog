@@ -13,6 +13,7 @@
         <p>You are logged as {{ request.user }}. click here to <a href="{% url 'logout' %}">
             logout
         </a></p>
+        <p>Want <a href="{% url 'password_change' %}">change your password</a></p>
     {% endif %}
 </body>
 </html>
