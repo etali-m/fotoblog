@@ -20,7 +20,7 @@ import authentication.views, blog.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', authentication.views.login_page, name='login'), #page de connexion
+    path('', authentication.views.LoginPageView.as_view(), name='login'), #page de connexion
     path('logout/', authentication.views.logout_user, name='logout'), #page de déconnexion
     path('home/', blog.views.home, name="home"),
 ]
