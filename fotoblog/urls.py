@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.contrib.auth.views import (LoginView, LogoutView, PasswordChangeView,PasswordChangeDoneView) #Nécessaire pour utiliser les genericView
+from django.contrib.auth.views import (LoginView, LogoutView, PasswordChangeView,PasswordChangeDoneView)
+import authentication #Nécessaire pour utiliser les genericView
 
-import blog.views
+import blog.views, authentication.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,4 +32,5 @@ urlpatterns = [
     path('chang-password-done/', PasswordChangeDoneView.as_view(
         template_name='authentication/password_change_done.html'), name='password_change_done'),
     path('home/', blog.views.home, name="home"),
+    path('signup', authentication.views.signup_page, name='signup'),
 ]

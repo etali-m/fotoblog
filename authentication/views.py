@@ -1,11 +1,17 @@
+from django.conf import settings
+from django.contrib.auth import login
 from django.shortcuts import render, redirect
 
-from . import forms
-from django.contrib.auth import login, authenticate, logout #les methodes pour l'authentification et le connexion
-from django.views.generic import View #Nécessaire pour utiliser les vues basées sur les classes
 
- 
-#la vue pour la deconnexion d'un utilisateur
-def logout_user(request):
-    logout(request)
-    return redirect('login')
+from . import forms
+
+def signup_page(request):
+    form = forms.SignupForm()
+    if request.method == 'POST':
+        form = forms.SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            #auto login the user
+            login(request, user)
+            return redirect(settings.LOGIN_REDIRECT_URL)
+    return render(request, 'authentication/signup.html', context={'form':form})

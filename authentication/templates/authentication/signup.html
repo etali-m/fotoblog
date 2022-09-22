@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-    <p>{{message}}</p>
+    <h2>Sign up</h2>
+    {% if form.errors %}
+        {{ form.errors }}
+    {% endif %}
     <form method="post">
         {{ form.as_p }}
         {% csrf_token %}
         <button type="submit">Submit</button>
     </form>
-    <p>Not a member ? <a href="{% url 'signup' %}">Sign up now</a></p>
 {% endblock content %}
