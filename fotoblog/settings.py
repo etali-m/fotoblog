@@ -124,3 +124,7 @@ AUTH_USER_MODEL = 'authentication.User'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = LOGIN_URL
+
+#pour les images ajoutées par un utilisateur
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR.joinpath('media/')
