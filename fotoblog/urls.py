@@ -35,6 +35,7 @@ urlpatterns = [
         template_name='authentication/password_change_done.html'), name='password_change_done'),
     path('home/', blog.views.home, name="home"), #page d'accueil
     path('signup', authentication.views.signup_page, name='signup'), #page d'inscription
+    path('profile-photo/upload', authentication.views.upload_profile_photo, name='upload_profile_photo'),
     path('photo/upload', blog.views.photo_upload, name='photo_upload'), #ajout de photo
 ]
 if settings.DEBUG:

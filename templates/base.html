@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,10 +11,17 @@
     <h1>Fotoblog</h1>
     {% block content %}{% endblock content %}
     {% if user.is_authenticated %}
-        <p>You are logged as {{ request.user }}. click here to <a href="{% url 'logout' %}">
-            logout
-        </a></p>
-        <p>Want <a href="{% url 'password_change' %}">change your password</a></p>
+        <p>Hey {{ user }}!</p>
+        {% if user.profile_photo %}
+            <img class="avatar" src={{ user.profile_photo.url }}>
+        {% else %}
+            <img class="avatar" src="{% static 'images/default_profile.png'%}">
+        {% endif %}
+        <p><a href="{% url 'home' %}">Home</a></p>
+        <p><a href="{% url 'photo_upload' %}">Upload Photo</a></p>
+        <p><a href="{% url 'upload_profile_photo' %}">Change profile photo</a></p>
+        <p><a href="{% url 'password_change' %}">Change your password</a></p>
+        <p><a href="{% url 'logout' %}">Logout</a></p>
     {% endif %}
 </body>
 </html>
