@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'app.css' %}">
     <title>Fotoblog</title>
 </head>
 <body>
-    <h1>Fotoblog</h1>
-    {% block content %}{% endblock content %}
-    {% if user.is_authenticated %}
-        <p>Hey {{ user }}!</p>
+    <div class="sidebar">
+        <h1>Fotoblog</h1>
+        {% if user.is_authenticated %}
+            <p>Hey {{ user }}!</p>
         {% if user.profile_photo %}
             <img class="avatar" src={{ user.profile_photo.url }}>
         {% else %}
@@ -23,5 +24,9 @@
         <p><a href="{% url 'password_change' %}">Change your password</a></p>
         <p><a href="{% url 'logout' %}">Logout</a></p>
     {% endif %}
+    </div>
+    <div class="main">
+        {% block content %}{% endblock content %}
+    </div>
 </body>
 </html>
