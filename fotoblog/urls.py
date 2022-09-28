@@ -38,6 +38,7 @@ urlpatterns = [
     path('profile-photo/upload', authentication.views.upload_profile_photo, name='upload_profile_photo'),
     path('photo/upload', blog.views.photo_upload, name='photo_upload'), #ajout de photo
     path('blog/create', blog.views.blog_an_photo_upload, name='blog_create'), #creer un post dans le blog
+    path('blog/<int:blog_id>', blog.views.view_blog, name='view_blog'),
 ]
 if settings.DEBUG:
     urlpatterns += static(
