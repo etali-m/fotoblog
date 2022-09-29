@@ -6,6 +6,7 @@
             <div class="post">
                 <a href="{% url 'view_blog' blog.id %}">
                     <h4>Blog post: {{ blog.title }}</h4>
+                    <p><a href="{% url 'edit_blog' blog.id %}">Edit blog</a></p>
                     <img src="{{ blog.photo.image.url }}">
                 </a>
             </div>
