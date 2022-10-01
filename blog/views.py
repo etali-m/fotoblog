@@ -29,7 +29,8 @@ def photo_upload(request):
     return render(request, 'blog/photo_upload.html', context={'form':form})
 
 @login_required
-def blog_an_photo_upload(request):
+@permission_required('blog.add_photo','blog.add_blog')
+def blog_and_photo_upload(request):
     blog_form = forms.BlogForm()
     photo_form = forms.PhotoForm()
     if request.method == 'POST':
@@ -58,6 +59,7 @@ def view_blog(request, blog_id):
 
 
 @login_required
+@permission_required('blog.change_blog')
 def edit_blog(request, blog_id):
     blog = get_object_or_404(models.Blog, id=blog_id)
     edit_form = forms.BlogForm(instance=blog)
