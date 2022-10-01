@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404
 
 from blog.models import Photo
@@ -16,6 +16,7 @@ def home(request):
 
 #vue pour l'ajout de nouvelle photo
 @login_required
+@permission_required('blog.add_photo', raise_exception=True) #permet de s'assurer que l'utilisateur qui est connecté a les droits d'ajout de photos
 def photo_upload(request):
     form = forms.PhotoForm()
     if request.method == 'POST':
