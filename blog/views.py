@@ -82,3 +82,14 @@ def edit_blog(request, blog_id):
         'delete_form': delete_form,
     }
     return render(request, 'blog/edit_blog.html', context=context)
+
+
+@login_required
+def follow_users(request):
+    form = forms.FollowUserForm(instance=request.user)
+    if request.method == 'POST':
+        form = forms.FollowUserForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    return render(request, 'blog/follow_users_form.html', context={'form':form})

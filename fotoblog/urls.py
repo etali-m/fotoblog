@@ -40,6 +40,7 @@ urlpatterns = [
     path('blog/create', blog.views.blog_and_photo_upload, name='blog_create'), #creer un post dans le blog
     path('blog/<int:blog_id>', blog.views.view_blog, name='view_blog'), #afficher les détails sur un post
     path('blog/<int:blog_id>/edit_blog', blog.views.edit_blog, name="edit_blog"),
+    path('blog/follow-users/', blog.views.follow_users, name='follow_users'), #lien pour la page pour suivre un createur
 ]
 if settings.DEBUG:
     urlpatterns += static(
