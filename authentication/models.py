@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group  #pour utiliser le modele AbstractUser
 
-
 class User(AbstractUser):
     CREATOR = 'CREATOR'
     SUBSCRIBER = 'SUBSCRIBER'

@@ -28,7 +28,9 @@ class Blog(models.Model):
     title = models.CharField(max_length=128)
     content = models.CharField(max_length=5000)
     word_count = models.IntegerField(null=True)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    #author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    contributors = models.ManyToManyField(settings.AUTH_USER_MODEL, through='BlogContributor',
+    related_name='contributions') #intermediary table to content all the contributors
     date_created = models.DateTimeField(auto_now_add=True)
     starred = models.BooleanField(default=False)
 
@@ -40,3 +42,14 @@ class Blog(models.Model):
     def save(self, *args, **kwargs):
         self.word_count = self._get_word_count()
         super().save(*args, **kwargs)
+
+
+#class that permit to have many contributors in a blog post and to store their logs
+class BlogContributor(models.Model):
+    contributor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    contributions = models.CharField(max_length=255, blank=True)
+
+    class Meta:
+        unique_together = ('contributor', 'blog') #to ensue that there is only one instance of
+                                                #each contributor - blog pairing
