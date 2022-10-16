@@ -1,18 +1,43 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 from blog.models import Photo
+from itertools import chain
 
 from . import forms
 from . import models
 
 # Create your views here.
 @login_required
-def home(request):
-    photos = models.Photo.objects.all() #on recupère toutes les photos
-    blogs = models.Blog.objects.all() #On recupère tout post du blog
-    return render(request, 'blog/home.html', context={'photos':photos, 'blogs':blogs})
+def home(request): 
+    #on va recupérer les posts des personnes qui sonst suivies par l'utilisateur qui 
+    #est connecté
+    blogs = models.Blog.objects.filter(
+        Q(contributors__in=request.user.follows.all()) |
+        Q(starred=True)
+        )
+    #On va recupérer les photos qui ont été uploader pour les utilisateurs qu'on suit
+    photos = models.Photo.objects.filter(uploader__in=request.user.follows.all()).exclude(
+        blog__in=blogs
+    )
+
+    blogs_and_photos = sorted(
+        chain(blogs, photos), key=lambda instance: instance.date_created, reverse=True
+    )
+    return render(request, 'blog/home.html', context={'blogs_and_photos':blogs_and_photos})
+
+
+@login_required
+def photo_feed(request):
+    photos = models.Photo.objects.filter(
+        Q(uploader__in=request.user.follow.all().order_by('-date_created'))
+    )
+    context = {
+    'photos':photos,
+    }
+    return render(request, 'blog/photo_feed.html', context=context)
 
 #vue pour l'ajout de nouvelle photo
 @login_required
