@@ -1,6 +1,5 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required, permission_required
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required, permission_required 
 from django.db.models import Q
 
 from blog.models import Photo
@@ -26,7 +25,10 @@ def home(request):
     blogs_and_photos = sorted(
         chain(blogs, photos), key=lambda instance: instance.date_created, reverse=True
     )
-    return render(request, 'blog/home.html', context={'blogs_and_photos':blogs_and_photos})
+    context = {
+        'blogs_and_photos': blogs_and_photos,
+    }
+    return render(request, 'blog/home.html', context=context)
 
 
 @login_required
@@ -69,7 +71,7 @@ def blog_and_photo_upload(request):
             blog.author = request.user
             blog.photo = photo
             blog.save()
-            blog.contributors.add(request.user, through_defaults={'contribution': 'Primary Author'})
+            blog.contributors.add(request.user, through_defaults={'contributions': 'Primary Author'})
             return redirect('home')
     context = {
         'blog_form': blog_form,
