@@ -30,16 +30,15 @@ def home(request):
     }
     return render(request, 'blog/home.html', context=context)
 
-
+#vue pour afficher unique les photos des personnes qu'on follow
 @login_required
 def photo_feed(request):
-    photos = models.Photo.objects.filter(
-        Q(uploader__in=request.user.follow.all().order_by('-date_created'))
-    )
+    photos = models.Photo.objects.filter(uploader__in=request.user.follows.all())
     context = {
     'photos':photos,
     }
     return render(request, 'blog/photo_feed.html', context=context)
+
 
 #vue pour l'ajout de nouvelle photo
 @login_required
