@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required 
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 from blog.models import Photo
 from itertools import chain
@@ -25,17 +26,26 @@ def home(request):
     blogs_and_photos = sorted(
         chain(blogs, photos), key=lambda instance: instance.date_created, reverse=True
     )
+    ## la pagination pour la page d'accueil
+    paginator = Paginator(blogs_and_photos, 6)
+    page_number = request.GET.get('page') #on recupère le numero de la page dans les paramètres de l'url
+    page_obj = paginator.get_page(page_number)
     context = {
-        'blogs_and_photos': blogs_and_photos,
+        'page_obj': page_obj,
     }
+
     return render(request, 'blog/home.html', context=context)
 
 #vue pour afficher unique les photos des personnes qu'on follow
 @login_required
 def photo_feed(request):
     photos = models.Photo.objects.filter(uploader__in=request.user.follows.all())
+    ##pagination pour les photos
+    paginator = Paginator(photos, 6)
+    page_number = request.GET.get('page')
+    photo_obj = paginator.get_page(page_number)
     context = {
-    'photos':photos,
+        'photo_obj':photo_obj,
     }
     return render(request, 'blog/photo_feed.html', context=context)
 
